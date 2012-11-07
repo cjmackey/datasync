@@ -1,4 +1,3 @@
 
 
-rm unit/*~
-nodeunit unit/*
+nodeunit unit/*.js

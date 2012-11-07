@@ -23,11 +23,23 @@ var LibDB = (function(){
 	    if(target !== undefined){
 		if(target instanceof Array){
 		    key = parseInt(key);
-		    if(isNAN(key)){return;}
+		    if(isNaN(key) || key < 0 || key >= target.length){return;}
+		    if(op.verb === 'del'){
+			/* deleting from an array is inconsistent
+			 * between javascript and JSON (since JSON has
+			 * no concept of undefined).  So, I convert
+			 * deletions within an array to setting that
+			 * key to null, which behaves similarly while
+			 * being consistent with the JSON string
+			 * representation.
+			 */
+			op.verb = 'set';
+			op.data.val = null;
+		    }
 		}else{
 		    key = '_'+key;
 		}
-		if(op.verb === 'setne' && target[key] !== undefined){return;}
+		if(op.verb === 'setne' && !(target[key] === undefined || target[key] === null)){return;}
 		if(op.verb === 'del'){
 		    delete target[key];
 		}else{
@@ -38,6 +50,7 @@ var LibDB = (function(){
 	case 'pop':
 	case 'shift':
 	case 'push':
+	case 'sort':
 	case 'unshift':
 	    var target = this.lookup(op.path());
 	    if(target instanceof Array){

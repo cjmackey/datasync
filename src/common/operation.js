@@ -40,6 +40,12 @@ var LibOperation = (function() {
     Operation.set = function(path, val){
 	return new Operation({'verb':'set', 'data':{'path':path, 'val':val}})
     }
+    Operation.setne = function(path, val){
+	return new Operation({'verb':'setne', 'data':{'path':path, 'val':val}})
+    }
+    Operation.del = function(path){
+	return new Operation({'verb':'del', 'data':{'path':path}})
+    }
     
     var exports = {};
     exports.Operation = Operation;
