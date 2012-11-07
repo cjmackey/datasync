@@ -44,3 +44,21 @@ exports.testSetChain = function(test){
     test.done();
 }
 
+var array_verbs = 'pop shift push unshift'.split(' ');
+for(var verbix in array_verbs){
+    var verb = array_verbs[verbix];
+    var ex = (exports[verb] = {})
+    ex.empty = function(test){
+	var db = new DB({'_asdf':[]});
+	var op = new Operation({'verb':verb, 'data':{'path':'asdf','a'}});
+	db.apply_operation(op);
+	var arr = [];
+	arr[verb]('a');
+	test.deepEqual(db.lookup('asdf'),arr);
+    }
+
+}
+
+
+
+
